@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"time"
@@ -86,7 +87,7 @@ func set(req server.WsRequest, hostport string) {
 
 	wsurl := fmt.Sprintf("ws://%s/ws", hostport)
 	username := "sibylcli"
-	url := fmt.Sprintf("%s?room=%s&token=%s&username=%s", wsurl, req.Room, req.Token, username)
+	url := fmt.Sprintf("%s?room=%s&token=%s&username=%s", wsurl, req.Room, url.QueryEscape(req.Token), username)
 	socket := gowebsocket.New(url)
 
 	socket.Connect()
