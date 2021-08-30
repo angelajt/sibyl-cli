@@ -45,7 +45,11 @@ func main() {
 	// extract token from html
 
 	re := regexp.MustCompile("Token:\\s+\"(.+?)\"")
-	token := re.FindStringSubmatch(string(body))[1]
+	m := re.FindStringSubmatch(string(body))
+	if len(m) == 0 {
+		log.Fatalf("unable to find token in HTML -- is %s room open?", *room)
+	}
+	token := m[1]
 
 	if len(*topic) != 0 {
 		setTopic(hostport, *room, token, *topic)
